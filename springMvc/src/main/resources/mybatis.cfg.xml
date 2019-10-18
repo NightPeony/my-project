@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+    <!--<settings>-->
+    <!--&lt;!&ndash; 打印sql日志 &ndash;&gt;-->
+    <!--<setting name="logImpl" value="STDOUT_LOGGING" />-->
+    <!--</settings>-->
+
+
+    <!--<environments default="developer">-->
+    <!--<environment id="developer">-->
+    <!--<transactionManager type="JDBC"></transactionManager>-->
+    <!--<dataSource type="POOLED">-->
+    <!--&lt;!&ndash;属性名如何查找，看源码类中的set方法  &ndash;&gt;-->
+    <!--<property name="driver" value="com.mysql.jdbc.Driver"></property>-->
+    <!--<property name="url" value="jdbc:mysql://localhost:3306/myspring?useSSL=false"></property>-->
+    <!--<property name="username" value="root"></property>-->
+    <!--<property name="password" value="root"></property>-->
+    <!--</dataSource>-->
+    <!--</environment>-->
+    <!--</environments>-->
+
+
+    <mappers>
+        <mapper resource="mapper/UserMapper.xml"/>
+    </mappers>
+</configuration>

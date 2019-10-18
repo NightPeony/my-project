@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--前面都是命名空间  xsi:schemaLocation代表对应的xtd文件所在地，键值对存放形式-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+       xmlns:task="http://www.springframework.org/schema/task" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+           	http://www.springframework.org/schema/context
+           	http://www.springframework.org/schema/context/spring-context-4.3.xsd
+           	http://www.springframework.org/schema/aop
+           	http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+           	http://www.springframework.org/schema/task
+   			http://www.springframework.org/schema/task/spring-task-4.3.xsd
+           	http://cxf.apache.org/jaxrs
+           	http://cxf.apache.org/schemas/jaxrs.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!--扫描-->
+    <!--<context:property-placeholder location="classpath:driver.properties"></context:property-placeholder>-->
+    <!--自动注入-->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    <context:component-scan base-package="www.hm.agency"></context:component-scan>
+    <context:annotation-config></context:annotation-config>
+    <!--mvc 驱动-->
+    <mvc:annotation-driven></mvc:annotation-driven>
+
+    <!--日志-->
+    <!--<bean id="propertiesLoad" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">-->
+    <!--<property name="location" value="log4j.properties"></property>-->
+    <!--</bean>-->
+    <!--&lt;!&ndash;数据源&ndash;&gt;-->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <!--属性名如何查找，看源码类中的set方法  -->
+        <property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/myspring?useSSL=false"></property>
+        <property name="user" value="root"></property>
+        <property name="password" value="root"></property>
+    </bean>
+
+    <!--##################################-->
+
+    <!--&lt;!&ndash;&lt;!&ndash;回话工厂&ndash;&gt;&ndash;&gt;-->
+    <bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:mybatis.cfg.xml"></property>
+    </bean>
+    <!--&lt;!&ndash;&lt;!&ndash;自动扫描&ndash;&gt;&ndash;&gt;-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="www.hm.agency.mybatis"></property>
+        <property name="sqlSessionFactoryBeanName" value="sessionFactory"></property>
+    </bean>
+
+    <!--&lt;!&ndash;##################################&ndash;&gt;-->
+
+    <bean id="transactionManeger" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+    <!--&lt;!&ndash; 使用annotation定义事务 &ndash;&gt;-->
+    <tx:annotation-driven transaction-manager="transactionManeger" proxy-target-class="true"/>
+
+</beans>
